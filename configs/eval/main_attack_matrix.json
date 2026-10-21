@@ -1,0 +1,22 @@
+{
+  "source_radii": {
+    "linf": "8/255",
+    "l2": 0.5
+  },
+  "clean_reported_separately": true,
+  "eleven_attack_mean": [
+    "fgsm_linf",
+    "pgd_linf_20",
+    "pgd_linf_50",
+    "cw_linf_20",
+    "cw_linf_50",
+    "autoattack_linf",
+    "pgd_l2_20",
+    "pgd_l2_50",
+    "cw_l2_20",
+    "cw_l2_50",
+    "autoattack_l2"
+  ],
+  "principal_standardized_metric": "autoattack_linf",
+  "auxiliary_cross_norm_metric": "autoattack_l2"
+}

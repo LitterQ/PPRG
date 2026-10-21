@@ -1,0 +1,18 @@
+{
+  "model": "DeiT-Tiny",
+  "seed": 0,
+  "grid_size": 15,
+  "radius": 0.2,
+  "direction_seed": 20260818,
+  "subset_seed": 20250816,
+  "num_samples": 256,
+  "batch_size": 64,
+  "primary_attack": "pgd_linf_10",
+  "auxiliary_attack": "pgd_l2_5",
+  "unseen_attacks": ["pgd_linf_20", "pgd_l2_20", "cw_linf_20"],
+  "shared_raw_directions_across_methods": true,
+  "direction_normalization": "checkpoint-relative filter-wise normalization",
+  "regenerate_adversarial_examples_at_each_grid_point": true,
+  "primary_reference_method": "PGD-AT",
+  "interpretation": "two-dimensional diagnostic, not a full high-dimensional curvature estimate"
+}

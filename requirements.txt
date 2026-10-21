@@ -1,0 +1,6 @@
+torch
+torchvision
+numpy
+timm==1.0.15
+matplotlib
+autoattack

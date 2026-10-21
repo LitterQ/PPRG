@@ -1,0 +1,30 @@
+dataset: cifar10
+model: resnet18
+epochs: 100
+batch_size: 128
+lr: 0.1
+optimizer: sgd
+momentum: 0.9
+weight_decay: 5e-4
+scheduler: cosine
+eps_linf: 8/255
+alpha_linf: 2/255
+eps_l2: 0.5
+alpha_l2: 0.1
+train_attack_domains:
+  - clean
+  - fgsm_linf
+  - pgd_linf_2
+  - pgd_linf_5
+  - pgd_l2_5
+eval_attacks:
+  - clean
+  - fgsm_linf
+  - pgd_linf_20
+  - pgd_linf_50
+  - pgd_l2_20
+  - pgd_l2_50
+rex_beta: 1.0
+clean_weight: 0.25
+domain_weights: ''
+seed: 0

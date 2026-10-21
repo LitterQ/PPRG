@@ -1,0 +1,9 @@
+{
+  "status": "single-seed diagnostic",
+  "seed": 0,
+  "four_source": ["clean", "fgsm_linf", "pgd_linf_5", "pgd_l2_5"],
+  "five_source": ["clean", "fgsm_linf", "pgd_linf_5", "pgd_linf_10", "pgd_l2_5"],
+  "matched_two_source": ["pgd_linf_10", "pgd_l2_5"],
+  "symmetric_aggregators": ["Avg", "PCGrad", "MGDA"],
+  "references": ["PGD-AT", "PDA"]
+}

@@ -1,0 +1,81 @@
+{
+  "recipe_version": "vit-paper-recipe-v2-official-init",
+  "paper_recipe_hash": "e459e2f6d09af41774f783782c2fb824071db84f32c8f3b9d08ed369cb4f9b49",
+  "official_source": {
+    "repository": "https://github.com/mo666666/When-Adversarial-Training-Meets-Vision-Transformers",
+    "commit": "b826030ad5c2dce94156d37ebe7f5bb3e4d67d83",
+    "files": ["parser_cifar.py", "train_cifar.py", "utils.py", "pgd.py", "model_for_cifar/deit.py"]
+  },
+  "model": {
+    "alias": "deit_tiny_patch4_32_paper",
+    "source": "deit_tiny_patch16_224.fb_in1k",
+    "pretrained_dataset": "ImageNet-1K",
+    "input_size": 32,
+    "patch_size": 4,
+    "num_classes": 10,
+    "drop_rate": 0.0,
+    "drop_path_rate": 0.0,
+    "timm_version": "1.0.15",
+    "pretrained_adaptation": {
+      "source_file": "model_for_cifar/deit.py@b826030ad5c2dce94156d37ebe7f5bb3e4d67d83",
+      "patch_embed": "official_block_sum_16x16_to_4x4",
+      "position_embedding": "official_bilinear_14x14_to_8x8_align_corners_false_no_antialias",
+      "generic_timm_checkpoint_filter": false
+    },
+    "default_pretrained_sha256": "a1311bcf4f24e3c95adaa75535db67bc4412d95535b98f7c1dfd1164dda41c97"
+  },
+  "data": {
+    "dataset": "cifar10",
+    "train_transform": ["Resize(32,32)", "RandomCrop(32,padding=4)", "RandomHorizontalFlip", "ToTensor"],
+    "test_transform": ["Resize(32,32)", "ToTensor"],
+    "normalization_mode": "once_inside_model_from_pixel_space",
+    "mean": [0.4914, 0.4822, 0.4465],
+    "std": [0.2471, 0.2435, 0.2616],
+    "shuffle_train": true,
+    "drop_last": false,
+    "official_num_workers": 16,
+    "runtime_num_workers_default": 2,
+    "persistent_workers_when_positive": true
+  },
+  "mixup_cutmix": {
+    "enabled": true,
+    "mixup_alpha": 0.8,
+    "cutmix_alpha": 1.0,
+    "cutmix_minmax": null,
+    "prob": 0.3,
+    "switch_prob": 0.5,
+    "mode": "batch",
+    "label_smoothing": 0.0,
+    "num_classes": 10,
+    "order": "transform -> mixup/cutmix -> soft-target PGD -> soft-target training loss"
+  },
+  "training": {
+    "epochs": 40,
+    "batch_size": 64,
+    "optimizer": "SGD",
+    "lr": 0.1,
+    "momentum": 0.9,
+    "weight_decay": 0.0001,
+    "amp": false,
+    "gradient_clip": {"norm_type": 2.0, "max_norm": 1.0, "stage": "final combined gradient"},
+    "lr_optimizer_step_epoch_ranges": {"1-35": 0.1, "36-38": 0.01, "39-40": 0.001},
+    "checkpoint_selection": "final epoch"
+  },
+  "attacks": {
+    "primary": {"name": "PGD-Linf", "steps": 10, "eps": "8/255", "alpha": "2/255", "random_start": true},
+    "auxiliary": {"name": "PGD-L2", "steps": 5, "eps": 0.5, "alpha": 0.1, "random_start": true}
+  },
+  "evaluation": {
+    "official_linf_pgd_cw": "correct-only updates, one random restart, per-sample maximum loss",
+    "cw_margin_floor": -10.0,
+    "autoattack_linf": "standard",
+    "extended_project_matrix": "legacy FGSM/L2 attacks and epsilon sweeps retained as additional reports"
+  },
+  "methods": {
+    "pgd_at_linf10": "L_primary",
+    "pda_no_proj_w0p1": "L_primary + 0.1 * L_aux",
+    "pda_no_proj_w0p2": "L_primary + 0.2 * L_aux",
+    "pda_proj_w0p2": "g_primary + 0.2 * projected(g_aux | g_primary)"
+  },
+  "seeds": [0, 1, 2]
+}

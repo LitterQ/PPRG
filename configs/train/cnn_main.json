@@ -1,0 +1,42 @@
+{
+  "scope": [
+    "CIFAR-10 / ResNet-18",
+    "CIFAR-100 / ResNet-18",
+    "CIFAR-10 / WideResNet-28-10"
+  ],
+  "seeds": [0, 1, 2],
+  "epochs": 100,
+  "batch_size": 128,
+  "optimizer": {
+    "name": "SGD",
+    "lr": 0.1,
+    "momentum": 0.9,
+    "weight_decay": 0.0005
+  },
+  "scheduler": {
+    "name": "CosineAnnealingLR",
+    "t_max": 100
+  },
+  "augmentation": [
+    "RandomCrop(32, padding=4)",
+    "RandomHorizontalFlip",
+    "ToTensor"
+  ],
+  "primary_attack": {
+    "name": "pgd_linf_10",
+    "epsilon": "8/255",
+    "step_size": "2/255",
+    "random_start": true
+  },
+  "auxiliary_attack": {
+    "name": "pgd_l2_5",
+    "epsilon": 0.5,
+    "step_size": 0.1,
+    "random_start": true
+  },
+  "experiments": {
+    "pgd_at": "L_primary",
+    "pda_0p1": "L_primary + 0.1 * L_auxiliary",
+    "pda_0p2": "L_primary + 0.2 * L_auxiliary"
+  }
+}
